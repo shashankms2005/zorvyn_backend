@@ -21,6 +21,10 @@ app.use('/api/users', userRoutes);
 app.use('/api/records', recordRoutes);
 app.use('/api/dashboard', dashboardRoutes);
 
+app.get('/', (req, res) => {
+  res.json({ message: 'Welcome to the Zorvyn Finance API! Proceed to /api/health to check status.' });
+});
+
 app.get('/api/health', (req, res) => {
   res.json({ success: true, message: 'Server is healthy' });
 });
