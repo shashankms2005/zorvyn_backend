@@ -247,8 +247,10 @@
     <h2>Part 3: REST API Specification</h2>
 
     <div class="auth-box">
-        <p><strong>Base URL:</strong> <code>http://localhost:3000/api</code></p>
-        <p><strong>Authentication:</strong> All protected endpoints require a JWT token in the header:<br>
+        <p><strong>Base URL:</strong> <code>https://zorvyn-backend.onrender.com/api</code> (or <code>http://localhost:3000/api</code>)</p>
+        <p><strong>Database Connection:</strong></p>
+        <pre style="margin:5px 0; font-size:12px;">DATABASE_URL="postgresql://postgres.latkjcwwvfzedqiuokrm:Shashank%4020077@aws-1-ap-south-1.pooler.supabase.com:5432/postgres?pgbouncer=true"</pre>
+        <p><strong>Authentication Header:</strong> All protected endpoints require a JWT token:<br>
         <code>Authorization: Bearer &lt;your_token&gt;</code></p>
     </div>
 

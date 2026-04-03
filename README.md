@@ -47,7 +47,7 @@ A robust, logically structured RESTful API backend built as a submission for the
    Create a `.env` file in the root directory (if not present) and add the following:
    ```env
    # PostgreSQL connection string
-   DATABASE_URL="postgresql://postgres.latkjcwwvfzedqiuokrm:YOUR_PASSWORD@aws-1-ap-south-1.pooler.supabase.com:5432/postgres"
+   DATABASE_URL="postgresql://postgres.latkjcwwvfzedqiuokrm:Shashank%4020077@aws-1-ap-south-1.pooler.supabase.com:5432/postgres?pgbouncer=true"
    
    # JWT Encryption Key
    JWT_SECRET="super_secret_jwt_key_for_assignment_only"
