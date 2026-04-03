@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Zorvyn Finance Backend - Complete Documentation</title>
+    <style>
+        :root {
+            --primary: #2563eb;
+            --bg: #f8fafc;
+            --surface: #ffffff;
+            --text-main: #1e293b;
+            --text-muted: #64748b;
+            --border: #e2e8f0;
+            --code-bg: #f1f5f9;
+            --success: #10b981;
+            --warning: #f59e0b;
+            --danger: #ef4444;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--bg);
+            color: var(--text-main);
+            line-height: 1.6;
+            margin: 0;
+            padding: 0;
+        }
+
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 40px 20px;
+        }
+
+        .header {
+            border-bottom: 2px solid var(--border);
+            padding-bottom: 20px;
+            margin-bottom: 40px;
+        }
+
+        h1 { font-size: 2.2rem; margin: 0 0 10px 0; color: var(--text-main); }
+        h2 { font-size: 1.6rem; margin: 50px 0 20px 0; color: var(--text-main); border-bottom: 2px solid var(--border); padding-bottom: 10px;}
+        h3 { font-size: 1.2rem; margin: 0 0 10px 0; color: var(--text-main); display: flex; align-items: center; gap: 10px;}
+        p { margin: 0 0 15px 0; color: var(--text-muted); }
+
+        .endpoint, .technical-card {
+            background: var(--surface);
+            border: 1px solid var(--border);
+            border-radius: 8px;
+            padding: 24px;
+            margin-bottom: 24px;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+        }
+
+        .technical-card h3 {
+            color: var(--primary);
+            border-bottom: 1px solid var(--border);
+            padding-bottom: 15px;
+            margin-bottom: 15px;
+        }
+
+        .method {
+            padding: 4px 8px;
+            border-radius: 4px;
+            font-size: 12px;
+            font-weight: bold;
+            text-transform: uppercase;
+        }
+
+        .method.get { background: #dcfce7; color: #166534; }
+        .method.post { background: #dbeafe; color: #1e40af; }
+        .method.put, .method.patch { background: #fef3c7; color: #92400e; }
+        .method.delete { background: #fee2e2; color: #991b1b; }
+
+        .path { font-family: monospace; font-size: 1.1rem; color: var(--text-main); }
+        
+        .badge {
+            background: var(--border);
+            color: var(--text-muted);
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+        }
+
+        pre {
+            background: var(--code-bg);
+            padding: 16px;
+            border-radius: 6px;
+            overflow-x: auto;
+            font-family: Consolas, Monaco, 'Andale Mono', 'Ubuntu Mono', monospace;
+            font-size: 14px;
+            border: 1px solid var(--border);
+            margin: 10px 0 20px 0;
+        }
+
+        ul { margin-top: 0; padding-left: 20px; color: var(--text-muted); }
+        li { margin-bottom: 8px; }
+        strong { color: var(--text-main); }
+
+        .auth-box {
+            background: #e0e7ff;
+            border-left: 4px solid var(--primary);
+            padding: 16px;
+            border-radius: 4px;
+            margin-bottom: 30px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="header">
+        <h1>Finance Backend - Documentation</h1>
+        <p>Complete REST API specification and System Architecture details for the Zorvyn Finance Dashboard.</p>
+    </div>
+
+    <h2>Tech Stack</h2>
+    <p>A breakdown of every technology used to build this backend.</p>
+    <div class="technical-card">
+        <table style="width:100%; border-collapse:collapse;">
+            <thead>
+                <tr style="border-bottom:2px solid var(--border);">
+                    <th style="text-align:left; padding:10px 8px; color:var(--text-main);">Layer</th>
+                    <th style="text-align:left; padding:10px 8px; color:var(--text-main);">Technology</th>
+                    <th style="text-align:left; padding:10px 8px; color:var(--text-main);">Purpose</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:10px 8px; color:var(--text-muted);">Runtime</td>
+                    <td style="padding:10px 8px;"><code>Node.js + TypeScript</code></td>
+                    <td style="padding:10px 8px; color:var(--text-muted);">Type-safe server execution, eliminates runtime type errors</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:10px 8px; color:var(--text-muted);">Framework</td>
+                    <td style="padding:10px 8px;"><code>Express.js</code></td>
+                    <td style="padding:10px 8px; color:var(--text-muted);">Modular HTTP routing and middleware chaining</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:10px 8px; color:var(--text-muted);">Database</td>
+                    <td style="padding:10px 8px;"><code>PostgreSQL on Supabase</code></td>
+                    <td style="padding:10px 8px; color:var(--text-muted);">Always-on cloud PostgreSQL with IPv4 Session Pooler (zero cold starts)</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:10px 8px; color:var(--text-muted);">ORM</td>
+                    <td style="padding:10px 8px;"><code>Prisma</code></td>
+                    <td style="padding:10px 8px; color:var(--text-muted);">Type-safe database queries, schema migrations, and aggregations</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:10px 8px; color:var(--text-muted);">Validation</td>
+                    <td style="padding:10px 8px;"><code>Zod</code></td>
+                    <td style="padding:10px 8px; color:var(--text-muted);">Runtime schema validation — rejects malformed inputs before processing</td>
+                </tr>
+                <tr style="border-bottom:1px solid var(--border);">
+                    <td style="padding:10px 8px; color:var(--text-muted);">Authentication</td>
+                    <td style="padding:10px 8px;"><code>JWT + bcrypt</code></td>
+                    <td style="padding:10px 8px; color:var(--text-muted);">Stateless token-based auth with encrypted password storage</td>
+                </tr>
+                <tr>
+                    <td style="padding:10px 8px; color:var(--text-muted);">Data Generation</td>
+                    <td style="padding:10px 8px;"><code>@faker-js/faker</code></td>
+                    <td style="padding:10px 8px; color:var(--text-muted);">Powers the seed script generating 1,000 realistic financial records</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+
+    <h2>Part 1: Feature Implementation Checklist</h2>
+    <p>Detailed justification mapping the assignment's core requirements directly to the codebase implementation.</p>
+
+    <div class="technical-card">
+        <h3>1. User and Role Management</h3>
+        <p><strong>Implemented via Prisma Relational Schema & Users API.</strong><br>
+        A deeply structured relational database model was built using Prisma with a dedicated <code>Role</code> enum (<code>ADMIN</code>, <code>ANALYST</code>, <code>VIEWER</code>). The management API (<code>src/routes/users.routes.ts</code>) empowers Admins to view all users, update their roles (<code>PATCH /users/:id/role</code>), and suspend users (<code>PATCH /users/:id/status</code> by flipping the <code>isActive</code> boolean). Suspending a user immediately blocks them at the authentication layer.</p>
+    </div>
+
+    <div class="technical-card">
+        <h3>2. Financial Records CRUD</h3>
+        <p><strong>Implemented via <code>records.routes.ts</code>.</strong><br>
+        A comprehensive REST API was built over a <code>Record</code> table that maps one-to-many with Users. All standard operations are supported securely: Create (maps incoming JSON to <code>prisma.create</code>), Read (<code>findMany</code>), Update (<code>update</code>), and Delete (<code>delete</code>). Strict ownership and relational data integrity guarantees no orphaned records.</p>
+    </div>
+
+    <div class="technical-card">
+        <h3>3. Record Filtering (by date, category, type)</h3>
+        <p><strong>Implemented dynamically in the <code>GET /records</code> endpoint.</strong><br>
+        Instead of pulling all data into memory to filter, the backend dynamically constructs a Prisma <code>where</code> constraints object based on intercepted Query Parameters (e.g., <code>?type=INCOME&startDate=2024-01-01</code>). Prisma translates this safely into optimal, raw SQL <code>WHERE</code> clauses, ensuring high query speeds and resilience against SQL injection.</p>
+    </div>
+
+    <div class="technical-card">
+        <h3>4. Dashboard Summary APIs</h3>
+        <p><strong>Implemented natively using Database-Engine Aggregation.</strong><br>
+        Instead of fetching thousands of raw rows and calculating totals via Javascript loops, the <code>GET /dashboard/summary</code> endpoint utilizes Prisma's native <code>.aggregate()</code> and <code>.groupBy()</code> computing functions. This offloads the heavy mathematical lifting (summing incomes, expenses, and category totals) directly to the PostgreSQL engine, resulting in instantaneous responses regardless of ledger scale.</p>
+    </div>
+
+    <div class="technical-card">
+        <h3>5. Role Based Access Control (RBAC)</h3>
+        <p><strong>Implemented via Express "Chain of Responsibility" Middleware.</strong><br>
+        Security is handled defensively at the edge. First, <code>auth.middleware.ts</code> decodes the stateless JWT to verify identity and account active-status. Second, <code>role.middleware.ts</code> intercepts the request to verify the user matches the array of allowed roles on that specific route (e.g., <code>requireRole(['ADMIN'])</code>). Unauthorized attempts are instantly rejected with a <code>403 Forbidden</code>.</p>
+    </div>
+
+    <div class="technical-card">
+        <h3>6. Input Validation and Error Handling</h3>
+        <p><strong>Implemented using Zod schemas and Global Error Handlers.</strong><br>
+        To prevent invalid database states, every incoming <code>POST</code>/<code>PUT</code>/<code>PATCH</code> request is filtered through strict Zod schemas (<code>src/schemas/record.schema.ts</code>). A generic validation middleware intercepts and throws a <code>400 Bad Request</code> automatically if the payload doesn't match the required type or shape. Unhandled promise rejections or server crashes are caught by a global error handler ensuring standardized JSON output instead of crashing the server.</p>
+    </div>
+
+    <div class="technical-card">
+        <h3>7. Data Persistence</h3>
+        <p><strong>Implemented using deployed Serverless PostgreSQL on Supabase & bulk seeding.</strong><br>
+        The backend utilizes a highly resilient cloud PostgreSQL database hosted on <strong>Supabase</strong> using an IPv4 Session Pooler connection — ensuring zero cold-start issues and persistent always-on availability. To ensure the API is fully testable immediately, a massive algorithmic seeding script (<code>prisma/seed.ts</code>) was engineered. It generates and writes <strong>1,000 randomized, realistic financial records</strong> distributed across the mock users via robust <code>createMany</code> bulk insertions.</p>
+    </div>
+
+    <h2>Part 2: Technical Architecture & Decisions</h2>
+    <p>This section outlines the engineering decisions, architectural patterns, and technical stack choices made during the development of this backend.</p>
+
+    <div class="technical-card">
+        <h3>1. System Architecture</h3>
+        <ul>
+            <li><strong>Routing Layer:</strong> Express.js handles HTTP routing. Routes are decoupled into modules (Auth, User, Record, Dashboard) to keep the entry point clean.</li>
+            <li><strong>Middleware Layer:</strong> A defensive "chain of responsibility" pattern using <code>auth.middleware</code> (JWT verification), <code>role.middleware</code> (Authorization), and <code>validate.middleware</code> (Zod request parsing).</li>
+            <li><strong>Persistence Layer:</strong> Prisma ORM provides a type-safe interface mapped directly to a cloud PostgreSQL database.</li>
+            <li><strong>Global Error Handler:</strong> Uses <code>express-async-errors</code> to catch unhandled promise rejections and normalize them into a standard, secure JSON error response format without leaking stack traces.</li>
+        </ul>
+    </div>
+
+    <div class="technical-card">
+        <h3>2. Security & Identity Management</h3>
+        <ul>
+            <li><strong>Password Hashing:</strong> Utilizes <code>bcrypt</code> with a salt round of 10 to protect against rainbow table attacks.</li>
+            <li><strong>Token-Based Auth:</strong> Stateless authentication using <strong>JSON Web Tokens (JWT)</strong>.</li>
+            <li><strong>RBAC (Role-Based Access Control):</strong> Permissions are strictly enforced horizontally across endpoints via role arrays (e.g., <code>['ADMIN', 'ANALYST']</code>). Modifying a user account to 'inactive' blocks them at the middleware layer on their very next request.</li>
+        </ul>
+    </div>
+
+    <div class="technical-card">
+        <h3>3. Data Modeling & Validation</h3>
+        <ul>
+            <li><strong>Primary Keys:</strong> Uses <strong>UUID (v4)</strong> for all primary keys instead of auto-incrementing integers to prevent ID guessing (Insecure Direct Object Reference attacks).</li>
+            <li><strong>Relational Integrity:</strong> Built a strict <code>One-to-Many</code> relationship where <code>User</code> owns <code>Record</code>.</li>
+            <li><strong>Zod Enforcement:</strong> Input validation intercepts the request natively. Zod schemas are used to infer TypeScript types, ensuring the controller logic never processes undefined or risky properties.</li>
+            <li><strong>Dashboard Aggregations:</strong> The Dashboard leverages database-engine calculations (Prisma's <code>aggregate</code> and <code>groupBy</code> algorithms) rather than mapping arrays in-memory, ensuring performance remains lightning fast even at immense scale.</li>
+        </ul>
+    </div>
+
+    <h2>Part 3: REST API Specification</h2>
+
+    <div class="auth-box">
+        <p><strong>Base URL:</strong> <code>http://localhost:3000/api</code></p>
+        <p><strong>Authentication:</strong> All protected endpoints require a JWT token in the header:<br>
+        <code>Authorization: Bearer &lt;your_token&gt;</code></p>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method post">POST</span> <span class="path">/auth/register</span> <span class="badge">Public</span></h3>
+        <p>Registers a new user with the default <code>VIEWER</code> role.</p>
+        <strong>Request Body:</strong>
+        <pre>{
+  "name": "Jane Doe",
+  "email": "jane@example.com",
+  "password": "strongpassword123"
+}</pre>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method post">POST</span> <span class="path">/auth/login</span> <span class="badge">Public</span></h3>
+        <p>Authenticates a user and returns a JWT session token.</p>
+        <strong>Request Body:</strong>
+        <pre>{
+  "email": "rahul.admin@Finance.zorvyn.com",
+  "password": "password123"
+}</pre>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method get">GET</span> <span class="path">/dashboard/summary</span> <span class="badge">ADMIN, ANALYST, VIEWER</span></h3>
+        <p>Returns aggregated, high-level financial statistics computed by the database engine.</p>
+        <strong>Response Returns:</strong>
+        <ul>
+            <li><code>totalIncome</code>: Sum of all income records.</li>
+            <li><code>totalExpense</code>: Sum of all expense records.</li>
+            <li><code>netBalance</code>: Total Income minus Total Expense.</li>
+            <li><code>categoryTotals</code>: Breakdown of spending/earning mapped per category.</li>
+            <li><code>recentActivity</code>: The 5 most recently created transactions.</li>
+        </ul>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method get">GET</span> <span class="path">/records</span> <span class="badge">ADMIN, ANALYST</span></h3>
+        <p>Fetches all financial transactions. Supports advanced filtering via exact matches and date ranges.</p>
+        <strong>Optional Query Parameters:</strong>
+        <ul>
+            <li><code>type</code>: INCOME or EXPENSE</li>
+            <li><code>category</code>: String (e.g., 'Salary', 'Rent'). <strong>Note: This search is robustly case-insensitive.</strong></li>
+            <li><code>startDate</code>: ISO Date string (e.g., 2024-01-01)</li>
+            <li><code>endDate</code>: ISO Date string (e.g., 2024-12-31)</li>
+            <li><code>paymentMethod</code>: CARD, CASH, TRANSFER, CRYPTO</li>
+            <li><code>status</code>: COMPLETED, PENDING, FAILED</li>
+            <li><code>currency</code>: 3 letter string (e.g., USD)</li>
+        </ul>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method post">POST</span> <span class="path">/records</span> <span class="badge">ADMIN ONLY</span></h3>
+        <p>Creates a new financial entry in the ledger.</p>
+        <strong>Request Body (Required Fields):</strong>
+        <pre>{
+  "amount": 1500.50,
+  "type": "INCOME",
+  "category": "Project Payment",
+  "date": "2024-03-25T10:00:00Z",
+  "paymentMethod": "TRANSFER",
+  "currency": "INR",
+  "notes": "Payment for Q1 Consulting"
+}</pre>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method put">PUT</span> <span class="path">/records/:id</span> <span class="badge">ADMIN ONLY</span></h3>
+        <p>Updates an existing record. All fields in the creation schema are accepted but optional.</p>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method delete">DELETE</span> <span class="path">/records/:id</span> <span class="badge">ADMIN ONLY</span></h3>
+        <p>Permanently deletes a financial record from the database.</p>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method get">GET</span> <span class="path">/users</span> <span class="badge">ADMIN ONLY</span></h3>
+        <p>Returns a list of all registered users with their current status and roles.</p>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method patch">PATCH</span> <span class="path">/users/:id/role</span> <span class="badge">ADMIN ONLY</span></h3>
+        <p>Upgrades or downgrades a user's permissions level.</p>
+        <strong>Request Body:</strong>
+        <pre>{ 
+  "role": "ANALYST" 
+}</pre>
+    </div>
+
+    <div class="endpoint">
+        <h3><span class="method patch">PATCH</span> <span class="path">/users/:id/status</span> <span class="badge">ADMIN ONLY</span></h3>
+        <p>Activates or deactivates a user account. Deactivated users are blocked from consuming endpoints.</p>
+        <strong>Request Body:</strong>
+        <pre>{ 
+  "isActive": false 
+}</pre>
+    </div>
+
+</div>
+
+</body>
+</html>

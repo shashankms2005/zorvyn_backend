@@ -15,7 +15,7 @@ router.get('/', requireRole(['ADMIN', 'ANALYST']), validate(queryRecordSchema), 
 
   const where: any = {};
   if (type) where.type = type;
-  if (category) where.category = category;
+  if (category) where.category = { equals: category, mode: 'insensitive' };
   if (paymentMethod) where.paymentMethod = paymentMethod;
   if (status) where.status = status;
   if (currency) where.currency = currency;
