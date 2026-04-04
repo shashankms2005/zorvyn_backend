@@ -114,6 +114,20 @@
     <div class="header">
         <h1>Finance Backend - Documentation</h1>
         <p>Complete REST API specification and System Architecture details for the Zorvyn Finance Dashboard.</p>
+        <div style="margin-top: 15px; font-size: 0.9rem; color: var(--text-muted);">
+            <strong>Name:</strong> Shashank M S | 
+            <strong>Email:</strong> <a href="mailto:shashupreethims@gmail.com" style="color: var(--primary); text-decoration: none;">shashupreethims@gmail.com</a> | 
+            <strong>Phone:</strong> +91 7483288142
+        </div>
+        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+            <strong>Backend API:</strong> <a href="https://zorvyn-backend-0n6d.onrender.com" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: bold;">Live Server</a> |
+            <strong>Live Demo:</strong> <a href="https://zorvyn-frontend-six.vercel.app" target="_blank" style="color: var(--primary); text-decoration: none; font-weight: bold;">Frontend Dashboard</a>
+        </div>
+        <div style="margin-top: 10px; font-size: 0.9rem; color: var(--text-muted);">
+            <strong>Source Code:</strong> 
+            <a href="https://github.com/shashankms2005/zorvyn_backend" target="_blank" style="color: var(--primary); text-decoration: none;">Backend GitHub</a> | 
+            <a href="https://github.com/shashankms2005/zorvyn_frontend" target="_blank" style="color: var(--primary); text-decoration: none;">Frontend GitHub</a>
+        </div>
     </div>
 
     <h2>Tech Stack</h2>
@@ -247,7 +261,7 @@
     <h2>Part 3: REST API Specification</h2>
 
     <div class="auth-box">
-        <p><strong>Base URL:</strong> <code>https://zorvyn-backend.onrender.com/api</code> (or <code>http://localhost:3000/api</code>)</p>
+        <p><strong>Base URL:</strong> <a href="https://zorvyn-backend-0n6d.onrender.com/api" target="_blank" style="color: var(--primary); text-decoration: none;"><code>https://zorvyn-backend-0n6d.onrender.com/api</code></a> (or <code>http://localhost:3000/api</code>)</p>
         <p><strong>Database Connection:</strong></p>
         <pre style="margin:5px 0; font-size:12px;">DATABASE_URL="postgresql://postgres.latkjcwwvfzedqiuokrm:Shashank%4020077@aws-1-ap-south-1.pooler.supabase.com:5432/postgres?pgbouncer=true"</pre>
         <p><strong>Authentication Header:</strong> All protected endpoints require a JWT token:<br>
@@ -349,6 +363,65 @@
         <pre>{ 
   "isActive": false 
 }</pre>
+    </div>
+
+    <h2>Part 4: Testing & Verification Guide</h2>
+
+    <div class="technical-card">
+        <h3>1. Connectivity Check (Public)</h3>
+        <p>The simplest way to verify the server is live. Click the link below to see the real-time health status.</p>
+        <a href="https://zorvyn-backend-0n6d.onrender.com/api/health" target="_blank" style="display: inline-block; background: var(--success); color: white; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; margin-top: 10px;">Run Live Health Check</a>
+        <pre style="margin-top: 15px;">Target: GET /api/health
+Expected: {"success":true,"message":"Server is healthy"}</pre>
+    </div>
+
+    <div class="technical-card">
+        <h3>2. User Registration (New Account)</h3>
+        <p>Prove that a user can be created and saved to the database. This verifies the <code>POST</code> method and database write permissions.</p>
+        <pre>POST https://zorvyn-backend-0n6d.onrender.com/api/auth/register
+Content-Type: application/json
+
+{
+  "name": "New User",
+  "email": "newuser@zorvyn.com",
+  "password": "password123"
+}</pre>
+        <strong>Success Criteria:</strong> Receives <code>201 Created</code>.
+    </div>
+
+    <div class="technical-card">
+        <h3>3. Authentication Test (Secure)</h3>
+        <p>Test the database connection and JWT generation logic using the pre-seeded Admin account.</p>
+        <strong>Tools:</strong> Use Postman or <code>curl</code>
+        <pre>POST https://zorvyn-backend-0n6d.onrender.com/api/auth/login
+Content-Type: application/json
+
+{
+  "email": "rahul.admin@Finance.zorvyn.com",
+  "password": "password123"
+}</pre>
+        <p><strong>Success Criteria:</strong> You should receive a <code>200 OK</code> status with a <code>token</code> string. This proves the Supabase connection and bcrypt validation are working perfectly.</p>
+    </div>
+
+    <div class="technical-card">
+        <h3>3. Data & Filtering Test</h3>
+        <p>Verify that the relational data (1,000 seeded records) is being retrieved and filtered correctly by the database engine.</p>
+        
+        <p><strong>Step A: Fetch All Records (Requires Token)</strong></p>
+        <pre>GET /api/records
+Header: Authorization: Bearer <TOKEN></pre>
+
+        <p><strong>Step B: Verify Category Filtering (Case-Insensitive)</strong></p>
+        <p>Click the link below to test the dynamic filtering logic (Note: This will return a 401 if you click it in the browser without an active session/header, but shows the URL structure):</p>
+        <code style="display: block; background: var(--code-bg); padding: 10px; border-radius: 4px; border: 1px solid var(--border); margin: 10px 0;"><a href="https://zorvyn-backend-0n6d.onrender.com/api/records?category=Dividends" target="_blank" style="color: var(--primary); text-decoration: none;">https://zorvyn-backend-0n6d.onrender.com/api/records?category=Dividends</a></code>
+    </div>
+
+    <div class="technical-card">
+        <h3>4. Summary Statistics Verification</h3>
+        <p>Prove that the Prisma aggregation engine is correctly calculating totals from the 1,000 records.</p>
+        <pre>GET /api/dashboard/summary
+Header: Authorization: Bearer <TOKEN></pre>
+        <p><strong>Expected:</strong> A JSON object containing <code>totalIncome</code>, <code>totalExpense</code>, <code>netBalance</code>, and <code>categoryTotals</code>. If these numbers are populated, the database aggregation logic is 100% verified.</p>
     </div>
 
 </div>

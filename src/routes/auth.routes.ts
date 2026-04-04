@@ -29,35 +29,26 @@ router.post('/register', validate(registerSchema), async (req, res) => {
 });
 
 router.post('/login', validate(loginSchema), async (req, res) => {
-  try {
-    const { email, password } = req.body;
-    console.log('Login attempt for:', email);
+  const { email, password } = req.body;
 
-    const user = await prisma.user.findUnique({ where: { email } });
-    
-    if (!user || !user.isActive) {
-      console.log('User not found or inactive');
-      return res.status(401).json({ success: false, error: 'Invalid credentials or account is disabled' });
-    }
-
-    const isMatch = await bcrypt.compare(password, user.password);
-    if (!isMatch) {
-      console.log('Password mismatch');
-      return res.status(401).json({ success: false, error: 'Invalid credentials' });
-    }
-
-    const token = jwt.sign(
-      { id: user.id }, 
-      process.env.JWT_SECRET || 'fallback_secret', 
-      { expiresIn: '1d' }
-    );
-
-    console.log('Login successful');
-    res.json({ success: true, token, data: { id: user.id, name: user.name, email: user.email, role: user.role } });
-  } catch (error) {
-    console.error('CRITICAL LOGIN ERROR:', error);
-    res.status(500).json({ success: false, error: 'Internal Server Error', details: (error as Error).message });
+  const user = await prisma.user.findUnique({ where: { email } });
+  
+  if (!user || !user.isActive) {
+    return res.status(401).json({ success: false, error: 'Invalid credentials or account is disabled' });
   }
+
+  const isMatch = await bcrypt.compare(password, user.password);
+  if (!isMatch) {
+    return res.status(401).json({ success: false, error: 'Invalid credentials' });
+  }
+
+  const token = jwt.sign(
+    { id: user.id }, 
+    process.env.JWT_SECRET || 'fallback_secret', 
+    { expiresIn: '1d' }
+  );
+
+  res.json({ success: true, token, data: { id: user.id, name: user.name, email: user.email, role: user.role } });
 });
 
 export default router;
